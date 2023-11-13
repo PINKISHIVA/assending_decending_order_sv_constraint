@@ -1,0 +1,112 @@
+//Write a code to generate ascending and descending order without using sort()(inbuilt method ) 
+
+
+class assert_example;
+  rand int a[];
+  int temp;
+  
+  constraint a_c{a.size()==10;}
+  constraint x{foreach(a[i])
+    a[i] inside {[1:10]};}
+  
+  function void post_randomize();
+    for(int i=0;i<10;i++)begin
+      for(int j=0; j<10;j++) begin
+        if(a[i]<a[j]) begin
+          temp=a[i];
+          a[i]=a[j];
+          a[j]=temp;
+        end
+      end
+    end
+    $display("ascending order \t%p",a);
+  endfunction
+endclass
+
+module top;
+  initial begin
+    assert_example c;
+    c=new();
+    c.randomize();
+  end
+endmodule 
+    
+Output : https://www.edaplayground.com/x/nav8
+KERNEL: ascending order '{1, 1, 1, 2, 2, 4, 6, 6, 7, 10}
+
+//Q22: Write a constraint such that array size between 5 to 10 values of the array in ascending order .In this program I am going to use extern constraint .
+
+class constr;
+  rand int a[];
+  constraint size;
+  constraint ascending;
+  
+  function void post_randomize();
+    $display("After radomizing a is =%p",a);
+  endfunction
+  
+endclass 
+
+constraint constr::size{a.size inside{[5:10]};}
+constraint constr::ascending{foreach (a[i])
+  a[i] inside {[1:10]};
+                             foreach(a[i])
+                               if(i>0)
+                                 a[i]>a[i-1];}    //ascending order
+                                // a[i]<a[i-1];}
+//descending order   a[i]<a[i-1];}
+
+module test;
+  constr c;
+  initial
+    begin 
+      c=new();
+      c.randomize();
+    end 
+endmodule                              
+
+Output : https://www.edaplayground.com/x/Zuiq
+# KERNEL: After radomizing a is ='{3, 6, 7, 9, 10}
+
+//Write a code to generate descending  order without using sort()(inbuilt method ) 
+
+class assert_example;
+  rand int a[];
+  int temp;
+  
+  constraint a_c{a.size()==10;}
+  constraint x{foreach(a[i])
+    a[i] inside {[1:10]};}
+  
+  function void post_randomize();
+    for(int i=0;i<10;i++)begin
+      for(int j=0; j<10;j++) begin
+        if(a[i]>a[j]) begin
+          temp=a[i];
+          a[i]=a[j];
+          a[j]=temp;
+        end
+      end
+    end
+    $display(“descending order \t%p",a);
+  endfunction
+endclass
+
+module top;
+  initial begin
+    assert_example c;
+    c=new();
+    c.randomize();
+  end
+endmodule 
+    
+Output : https://www.edaplayground.com/x/XrKS
+descending order '{10, 7, 6, 6, 4, 2, 2, 1, 1, 1}
+
+
+
+
+
+
+
+
